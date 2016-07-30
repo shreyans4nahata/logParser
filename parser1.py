@@ -44,7 +44,7 @@ try:
 		#Creating a dictionary to store the current row values
 		d1 = {}
 		
-		if 'HTTP' not in extTuple[7]:
+		if 'HTTP' not in extTuple[7]:#Solution to the get request parameters shifting to http version field in the output
 			del extTuple[6]
 			del extTuple[7]
 		
