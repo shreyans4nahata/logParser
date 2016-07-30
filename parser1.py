@@ -35,21 +35,33 @@ logRegex = "\[(.*?)\] ([(\d\.)]+) ([(\d\.)]+) - - (\d*) (\S+) (\S*)(\s*)(\S*)(\s
 lineCount = 0
 
 try:
+	
 	for eachLine in inputFile:
+		
 		lineCount+=1
-		extTuple = re.match(logRegex,eachLine).groups()
-		extTupleLen = len(extTuple)
+		extTuple = list(re.match(logRegex,eachLine).groups())
+		
 		#Creating a dictionary to store the current row values
 		d1 = {}
+		
+		if 'HTTP' not in extTuple[7]:
+			del extTuple[6]
+			del extTuple[7]
+		
+		extTupleLen = len(extTuple)
+		
 		for i in range(extTupleLen):
 			d1[fieldnames[i]] = extTuple[i]
-
+		
 		writer.writerow(d1)
+		
 		#Clear the dictionary
 		d1.clear()
 		
 except Exception as e:
+	
 	print e
 	print "Occured at line: " + str(lineCount)
+
 inputFile.close()
-outputFile.close()
+outputFisle.close()
