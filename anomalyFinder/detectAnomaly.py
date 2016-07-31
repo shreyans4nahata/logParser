@@ -1,3 +1,5 @@
+#Detect anomaly in the equality of the 2 IP's given.
+
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import csv
@@ -51,3 +53,6 @@ for each_row in reader:
 
 plt.plot(t_list,ip1_list,'b')
 plt.show()
+
+#Close file
+inputCSV.close()
