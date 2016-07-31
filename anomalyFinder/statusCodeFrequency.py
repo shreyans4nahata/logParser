@@ -28,6 +28,7 @@ status_list =[]
 #It displays around 280 graphs for the current csv file
 #Hold on tight!!
 for i in range(res_set_len):
+
 	#Set pointer again to the begining
 	inputCSV.seek(0)
 	reader.next()
@@ -50,13 +51,20 @@ for i in range(res_set_len):
 
 			#Creating status code list
 			status_list.append(int(each_row['f10']))
-
 	
-	plt.plot(t_list,status_list)
-	plt.xlabel('Timestamp')
-	plt.ylabel('Status codes')
-	plt.title('For resource '+str(res_set[i]))
-	plt.show()
+	#Tweak to display only some graphs
+	#Experimental!!
+	status_set = set(status_list)
+	if len(status_set)>1:
+		print "Plotting ",res_set[i]
+		plt.plot(t_list,status_list)
+		plt.xlabel('Timestamp')
+		plt.ylabel('Status codes')
+		plt.title('For resource '+str(res_set[i]))
+		plt.show()
+	else:
+		print "Skipping ",res_set[i],"It has following status codes: ",status_set
+	
 	#Clear list fix
 	del status_list[:]
 	del t_list[:]
