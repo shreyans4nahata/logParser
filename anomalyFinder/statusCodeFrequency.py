@@ -51,11 +51,14 @@ for i in range(res_set_len):
 			#Creating status code list
 			status_list.append(int(each_row['f10']))
 
+	
 	plt.plot(t_list,status_list)
 	plt.xlabel('Timestamp')
 	plt.ylabel('Status codes')
 	plt.title('For resource '+str(res_set[i]))
 	plt.show()
+	status_list.clear()
+	t_list.clear()
 
 #Close file
 inputCSV.close()
