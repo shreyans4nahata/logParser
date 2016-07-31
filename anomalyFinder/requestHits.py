@@ -51,3 +51,6 @@ for k in range(unique_ip_len):
     plt.ylabel('time',fontsize = 20)
     plt.ylabel(unique_ip[k],fontsize = 18)
     plt.show()
+
+#Close file
+fileObject.close()
