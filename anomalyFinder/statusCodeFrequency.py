@@ -57,8 +57,9 @@ for i in range(res_set_len):
 	plt.ylabel('Status codes')
 	plt.title('For resource '+str(res_set[i]))
 	plt.show()
-	status_list.clear()
-	t_list.clear()
+	#Clear list fix
+	del status_list[:]
+	del t_list[:]
 
 #Close file
 inputCSV.close()
