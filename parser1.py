@@ -28,40 +28,40 @@ writer = csv.DictWriter(outputFile,fieldnames=fieldnames)
 
 writer.writeheader()
 
-# The Initial regex 
+# The Initial regex
 logRegex = "\[(.*?)\] ([(\d\.)]+) ([(\d\.)]+) - - (\d*) (\S+) (\S*)(\s*)(\S*)(\s*)(\S*)(\s*)(\d*) (\w*)(\W*) (\w+)"
 
 #To keep the count of line no.
 lineCount = 0
 
 try:
-	
+
 	for eachLine in inputFile:
-		
+
 		lineCount+=1
 		extTuple = list(re.match(logRegex,eachLine).groups())
-		
+
 		#Creating a dictionary to store the current row values
 		d1 = {}
-		
+
 		if 'HTTP' not in extTuple[7]:
 			del extTuple[6]
 			del extTuple[7]
-		
+
 		extTupleLen = len(extTuple)
-		
+
 		for i in range(extTupleLen):
 			d1[fieldnames[i]] = extTuple[i]
-		
+
 		writer.writerow(d1)
-		
+
 		#Clear the dictionary
 		d1.clear()
-		
+
 except Exception as e:
-	
+
 	print e
 	print "Occured at line: " + str(lineCount)
 
 inputFile.close()
-outputFisle.close()
+outputFile.close()
