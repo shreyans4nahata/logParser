@@ -8,9 +8,10 @@ inputCSVFile = '../parsedOutput/Parsed_localhost_access_log-1.csv' # file path
 fileObject = open(inputCSVFile)
 reader = csv.DictReader(fileObject)
 
-a = input()
-b = input()
-#print "DEBUgs"
+#Taking input to show formatted graphs
+a = input()#starting index 
+b = input()#Ending index
+
 timestamp = [] # list to store all timestamps includes duplicates
 ip = [] # list to store all remote ip's
 
@@ -39,18 +40,15 @@ for k in range(unique_ip_len):
         if ip[j] == unique_ip[k]:
             temp_dict[timestamp[j]]+=1
 
-#    print temp_dict
     # sorting dictionary by keys
     od = collections.OrderedDict(sorted(temp_dict.items()))
 
     for t,i in od.iteritems():
-#        print t,i
         time,dis =t.split(' ')
         time_stamp = datetime.datetime.strptime(time,'%d/%b/%Y:%H:%M:%S')
         time_val = mdates.date2num(time_stamp)
         t_list.append(time_val)
         tr.append(i)
-#    print sum(tr)
 
     #plt.figure(figsize = ( ,250))
     print len(tr),len(t_list)
