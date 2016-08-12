@@ -1,5 +1,4 @@
 import csv
-import numpy as np
 import os
 import ntpath
 import sys
@@ -7,23 +6,12 @@ import collections
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
+import numpy as np
 
 inputCSVFile = '../parsedOutput/Parsed_localhost_access_log-1.csv' # file path
 fileObject = open(inputCSVFile)
 reader = csv.DictReader(fileObject)
 
-outputDir = os.getcwd() + "/parsedOutput/"
-outputFileName = os.getcwd() + "/par.csv"
-a = input()
-b = input()
-
-outputFile = open(outputFileName,"w+")
-
-fieldnames = ['f2']
-
-writer = csv.DictWriter(outputFile,fieldnames=fieldnames)
-
-writer.writeheader()
 #print "DEBUgs"
 timestamp = [] # list to store all timestamps includes duplicates
 ip = [] # list to store all remote ip's
@@ -78,22 +66,17 @@ for k in range(unique_ip_len):
 #    print sum(tr)
     print len(diff_tim)
     print tr
-    print diff_tim
-    for y in range(len(diff_tim)):
-        sp_dict = {}
-        sp_dict['f1'] = diff_tim[y]
-        sp_dict['f2'] = tr[y]
-        writer.writerow(sp_dict)
-        sp_dict.clear()
+
+    
 
     #plt.figure(figsize = ( ,250))
-    print tr
-    plt.plot(t_list[a:b],tr[a:b],lw = 2)
-    plt.ylabel('time',fontsize = 20)
-    plt.ylabel(unique_ip[k],fontsize = 18)
-    mng = plt.get_current_fig_manager()
-    mng.full_screen_toggle()
-    plt.show()
+    # print tr
+    # plt.plot(t_list,)
+    # plt.ylabel('time',fontsize = 20)
+    # plt.ylabel(unique_ip[k],fontsize = 18)
+    # mng = plt.get_current_fig_manager()
+    # mng.full_screen_toggle()
+    # plt.show()
     break
 
 #Close file

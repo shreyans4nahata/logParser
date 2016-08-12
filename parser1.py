@@ -21,7 +21,7 @@ outputFileName = outputDir + "Parsed_" + os.path.splitext(ntpath.basename(inputF
 outputFile = open(outputFileName,"w+")
 
 #Row name fields (Currently settitng sample names)
-fieldnames = ['f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12','f13','f14','f15']
+fieldnames = ['f0','f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12','f13','f14','f15']
 
 #Defining the attributes for the csv file
 writer = csv.DictWriter(outputFile,fieldnames=fieldnames)
@@ -44,14 +44,19 @@ try:
 		#Creating a dictionary to store the current row values
 		d1 = {}
 
-		if 'HTTP' not in extTuple[7]:#Solution to the get request parameters shifting to http version field in the output
+		#Adding lineCount value to field 'f0'
+		d1['f0'] = lineCount
+
+		if 'HTTP' not in extTuple[7]:
+			#Solution to the get request parameters shifting to http version field in the output
 			del extTuple[6]
 			del extTuple[7]
 
 		extTupleLen = len(extTuple)
 
 		for i in range(extTupleLen):
-			d1[fieldnames[i]] = extTuple[i]
+			#i+1 done as need to access fields from 'f1'
+			d1[fieldnames[i+1]] = extTuple[i]
 
 		writer.writerow(d1)
 
