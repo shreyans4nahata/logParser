@@ -39,7 +39,7 @@ for k in range(unique_ip_len):
 
     # incrementing the count for each ip
     for j in range(len(timestamp)):
-        if ip[j] == "10.241.248.26":
+        if ip[j] == unique_ip[k]:
             temp_dict[timestamp[j]]+=1
 
 #    print temp_dict
@@ -69,26 +69,27 @@ for k in range(unique_ip_len):
 
     q75, q25 = np.percentile(tr, [75 ,25])
     iqr = q75 - q25
-    ul = q75 + 1.5*iqr
-    ll = q25 - 1.5*iqr
+    ul = q75 + 3.0*iqr
+    ll = q25 - 3.0*iqr
 
     print q75,q25
     outlier = []
+    outlier_x = []
     for h in range(len(tr)):
         if tr[h] < ll or tr[h] > ul:
-            outlier.append(h)
-
-    print len(outlier)
+            outlier.append(tr[h])
+            outlier_x.append(t_list[h])
+    print len(outlier), len(outlier_x)
 
     #plt.figure(figsize = ( ,250))
     # print tr
-    plt.plot(tr,linestyle = '-',marker = 'o',color = 'r',markevery = outlier)
+    plt.plot(t_list,tr)
+    plt.plot(outlier_x,outlier,linestyle = '-',marker = 'o',color = 'r')
     # plt.ylabel('time',fontsize = 20)
     # plt.ylabel(unique_ip[k],fontsize = 18)
     # mng = plt.get_current_fig_manager()
     # mng.full_screen_toggle()
     plt.show()
-    break
 
 #Close file
 fileObject.close()
