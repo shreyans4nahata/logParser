@@ -35,7 +35,7 @@ for i in range(res_set_len):
 	post_val = 0
 	get_val = 0
 	oth_val = 0
-	
+
 	for each_row in reader:
 		#Check for the count
 		if each_row['f6'] == res_set[i]:
@@ -45,7 +45,7 @@ for i in range(res_set_len):
 				post_val+=1
 			else:
 				oth_val+=1
-	
+
 	#Append all values
 	post_list.append(post_val)
 	get_list.append(get_val)
