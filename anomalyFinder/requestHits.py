@@ -65,18 +65,29 @@ for k in range(unique_ip_len):
         diff_tim.append(t_list[x] - t_list[0])
 #    print sum(tr)
     print len(diff_tim)
-    print tr
+    #print tr
 
-    
+    q75, q25 = np.percentile(tr, [75 ,25])
+    iqr = q75 - q25
+    ul = q75 + 1.5*iqr
+    ll = q25 - 1.5*iqr
+
+    print q75,q25
+    outlier = []
+    for h in range(len(tr)):
+        if tr[h] < ll or tr[h] > ul:
+            outlier.append(h)
+
+    print len(outlier)
 
     #plt.figure(figsize = ( ,250))
     # print tr
-    # plt.plot(t_list,)
+    plt.plot(tr,linestyle = '-',marker = 'o',color = 'r',markevery = outlier)
     # plt.ylabel('time',fontsize = 20)
     # plt.ylabel(unique_ip[k],fontsize = 18)
     # mng = plt.get_current_fig_manager()
     # mng.full_screen_toggle()
-    # plt.show()
+    plt.show()
     break
 
 #Close file
