@@ -58,13 +58,13 @@ for k in range(unique_ip_len):
         #sp_dict.clear()
         t_list.append(time_val)
         tr.append(i)
-
+    #print t_list
     diff_tim = []
     diff_tim.append(0)
     for x in range(1,len(t_list)):
         diff_tim.append(t_list[x] - t_list[0])
 #    print sum(tr)
-    print len(diff_tim)
+    #print (diff_tim)
     #print tr
 
     q75, q25 = np.percentile(tr, [75 ,25])
@@ -81,20 +81,6 @@ for k in range(unique_ip_len):
             outlier_x.append(t_list[h])
     print len(outlier), len(outlier_x)
 
-    # tr = np.array(tr,dtype = np.float32)
-
-    #For median absolute deviation
-
-    # median_tr = np.median(tr,axis=0)
-    # ref_data = np.sum((tr - median_tr)**2, axis=-1)
-    # ref_data = np.sqrt(ref_data)
-    #med_data = np.median(ref_data) 
-    # ref_pt = 0.6745*ref_data/med_data
-    # tr[ref_pt>3.5] = np.nan
-
-    mad_data = 1.4296 * np.median(np.abs(tr - np.median(tr,None)),None)
-    ref = np.abs(tr-np.median(tr))/mad_data
-    print ref
 
     #plt.figure(figsize = ( ,250))
     # print tr
@@ -106,25 +92,39 @@ for k in range(unique_ip_len):
     # mng.full_screen_toggle()
     plt.show()
 
-    #Using iqr on mad data
-    # q75, q25 = np.percentile(ref, [75 ,25])
-    # iqr = q75 - q25
-    # ul = q75 + 3.0*iqr
-    # ll = q25 - 3.0*iqr
+    #For median absolute deviation
+    tuned_param = 3.5
+    window = 10
 
-    # print q75,q25
+    median_tr = np.median(tr[0:window])
+    r_outlier = []
+    r_outlier_x = []
+    
+    len_tr = len(tr)
+    tot_dev = 0
+    whole_median = np.median(tr)
+    for i in range(1,(len_tr-window)):
+        ch_tr = np.abs(tr[(window+i)]-median_tr)
+        tot_dev+=ch_tr
+        median_tr = np.median(tr[i:window+i])
+    
+    # ch_tr = np.abs(tr[i:window]-median_tr)
+    # #print ch_tr
+    # median_ch_tr = np.median(ch_tr)
+    # const_b = 0.3495
+    # #print const_b
+    mad_val = abs(tot_dev/(len_tr-window))
+    ul = tuned_param*mad_val + whole_median
+    ll = whole_median - tuned_param*mad_val
+        
+    for h in range(len_tr):
+        if tr[h] < ll or tr[h] > ul:
+            r_outlier.append(tr[h])
+            r_outlier_x.append(t_list[h])
 
-    # r_outlier = []
-    # r_outlier_x = []
-    
-    # for h in range(len(ref)):
-    #     if ref[h] < ll or ref[h] > ul:
-    #         r_outlier.append(ref[h])
-    #         r_outlier_x.append(t_list[h])
-    # print len(r_outlier), len(r_outlier_x)
-    
-    plt.plot(t_list,ref)
-    # plt.plot(r_outlier_x,r_outlier,linestyle = '-',marker = 'o',color = 'r')
+    print len(r_outlier)
+    plt.plot(t_list,tr)
+    plt.plot(r_outlier_x,r_outlier,linestyle = '-',marker = 'o',color = 'r')
     plt.show()
 #Close file
 fileObject.close()
