@@ -84,22 +84,22 @@ for k in range(unique_ip_len):
 
     #plt.figure(figsize = ( ,250))
     # print tr
-    plt.plot(t_list,tr)
-    plt.plot(outlier_x,outlier,linestyle = '-',marker = 'o',color = 'r')
+    #plt.plot(t_list,tr)
+    #plt.plot(outlier_x,outlier,linestyle = '-',marker = 'o',color = 'r')
     # plt.ylabel('time',fontsize = 20)
     # plt.ylabel(unique_ip[k],fontsize = 18)
     # mng = plt.get_current_fig_manager()
     # mng.full_screen_toggle()
-    plt.show()
+    #plt.show()
 
     #For median absolute deviation
-    tuned_param = 3.5
-    window = 10
+    tuned_param = 4.5
+    window = 500
 
     median_tr = np.median(tr[0:window])
     r_outlier = []
     r_outlier_x = []
-    
+
     len_tr = len(tr)
     tot_dev = 0
     whole_median = np.median(tr)
@@ -107,7 +107,7 @@ for k in range(unique_ip_len):
         ch_tr = np.abs(tr[(window+i)]-median_tr)
         tot_dev+=ch_tr
         median_tr = np.median(tr[i:window+i])
-    
+
     # ch_tr = np.abs(tr[i:window]-median_tr)
     # #print ch_tr
     # median_ch_tr = np.median(ch_tr)
@@ -116,7 +116,7 @@ for k in range(unique_ip_len):
     mad_val = abs(tot_dev/(len_tr-window))
     ul = tuned_param*mad_val + whole_median
     ll = whole_median - tuned_param*mad_val
-        
+
     for h in range(len_tr):
         if tr[h] < ll or tr[h] > ul:
             r_outlier.append(tr[h])
