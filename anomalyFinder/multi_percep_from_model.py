@@ -8,14 +8,22 @@ from keras.models import model_from_json
 
 numpy.random.seed(7)
 # load the dataset
-dataframe = pd.read_csv('parsedOutputarima_model.csv',usecols=[1], engine='python', skipfooter=0)
+dataframe = pd.read_csv('parsedOutputarima_model1.csv',usecols=[1], engine='python', skipfooter=0)
+dataframe_actual = pd.read_csv('parsedOutputarima_model.csv',usecols=[1], engine='python', skipfooter=0)
+
+dataset_actual = dataframe_actual.values
+dataset_actual = dataset_actual.astype('float32')
+
 dataset = dataframe.values
 dataset = dataset.astype('float32')
+
+actual_values = dataset_actual[-11:,:] #last 10 actual values
 
 test_size = len(dataset)
 test = dataset[0:test_size,:]
 print len(dataset)
 print(len(test))
+
 # convert an array of values into a dataset matrix
 def create_dataset(dataset, look_back=1):
 	dataX, dataY = [], []
@@ -40,18 +48,22 @@ loaded_model = model_from_json(loaded_model_json)
 loaded_model.load_weights("model.h5")
 print("Loaded model from disk")
 
-loaded_model.compile(loss='mean_squared_error', optimizer='adam')
+loaded_model.compile(loss='mean_squared_error', optimizer='rmsprop')
 
 # generate predictions for testing
+print actual_values
+for i in range(0,len(testX)-1):
+	testPredict = loaded_model.predict(testX)
+	#err = 0
+	err = (testPredict[i][0] - actual_values[i][0])/(actual_values[i][0])
+	testX[i+1][0] = testPredict[i][0] - (err *testPredict[i][0])
 testPredict = loaded_model.predict(testX)
-
 
 # shift test predictions for plotting
 testPredictPlot = numpy.empty_like(dataset)
 testPredictPlot[:, :] = numpy.nan
 testPredictPlot[look_back:len(testPredict)+look_back, :] = testPredict
-
-print testPredict[36:40]
+print testPredict
 # plot baseline and predictions
 plt.plot(dataset)
 plt.plot(testPredictPlot)
